@@ -183,7 +183,7 @@ class ApplovinPlugin {
     );
   }
 
-  static void setApplovinAdUnits({required List<String> interstitialList, required List<String> rewardedList, required List<String> mrecList, required String bannerBottom, required String bannerTop}) {
+  static void setApplovinAdUnits({required List<String> interstitialList, required List<String> rewardedList, required String bannerBottom, required String bannerTop}) {
     _adUnitSetUpComplete = true;
     _setInterstitialListener();
     _setRewardedAdListener();
