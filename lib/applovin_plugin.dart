@@ -23,14 +23,11 @@ class ApplovinPlugin {
   static bool _adUnitSetUpComplete = false;
   static List<String> _interstitialUnitList = [];
   static List<String> _rewardedUnitList = [];
-  static List<String> _mrecUnitList = [];
   static String _bannerBottom = "";
   static String _bannerTop = "";
   static _VideoType _videoAdType = _VideoType.rewarded;
   static int _iIndex = 0;
   static int _rIndex = 0;
-  static int _mRecIndex = 0;
-  static final Map<String, bool> _isMRecLoaded = {};
 
   static Future<Map?> initialiseSDK(String sdkKey) async {
     return await AppLovinMAX.initialize(sdkKey);
@@ -43,7 +40,6 @@ class ApplovinPlugin {
   static void _setInterstitialListener() {
     AppLovinMAX.setInterstitialListener(InterstitialListener(
       onAdLoadedCallback: (ad) {
-        // Interstitial ad is ready to be shown. AppLovinMAX.isInterstitialReady(_interstitial_ad_unit_id) will now return 'true'
         if (kDebugMode) {
           print('Interstitial ad loaded from ' + ad.networkName);
         }
@@ -187,50 +183,13 @@ class ApplovinPlugin {
     );
   }
 
-  static void _setMRecListener() {
-    AppLovinMAX.setMRecListener(
-        AdViewAdListener(
-          onAdLoadedCallback: (ad) {
-            _isMRecLoaded[ad.adUnitId] = true;
-            if (kDebugMode) {
-              print('MREC ad loaded from ' + ad.networkName);
-            }
-          },
-          onAdLoadFailedCallback: (adUnitId, error) {
-            if (kDebugMode) {
-              print('MREC ad failed to load with code ' +
-                  error.code.toString());
-            }
-            _createMRecAd(adUnitId);
-          },
-          onAdCollapsedCallback: (ad) {
-            if (kDebugMode) {
-              print('MREC Ad Collapsed');
-            }
-          },
-          onAdExpandedCallback: (ad) {
-            if (kDebugMode) {
-              print('MREC Ad Expanded');
-            }
-          },
-          onAdClickedCallback: (ad) {
-            if (kDebugMode) {
-              print('MREC Ad Clicked');
-            }
-          },
-        )
-    );
-  }
-
   static void setApplovinAdUnits({required List<String> interstitialList, required List<String> rewardedList, required List<String> mrecList, required String bannerBottom, required String bannerTop}) {
     _adUnitSetUpComplete = true;
     _setInterstitialListener();
     _setRewardedAdListener();
     _setBanneristener();
-    _setMRecListener();
     _interstitialUnitList = interstitialList;
     _rewardedUnitList = rewardedList;
-    _mrecUnitList = mrecList;
     _bannerBottom = bannerBottom;
     _bannerTop = bannerTop;
     for (var adUnit in _interstitialUnitList) {
@@ -238,10 +197,6 @@ class ApplovinPlugin {
     }
     for (var adUnit in _rewardedUnitList) {
       AppLovinMAX.loadRewardedAd(adUnit);
-    }
-    for (var adUnit in _mrecUnitList) {
-      _isMRecLoaded[adUnit] = false;
-      _createMRecAd(adUnit);
     }
     _createBannerAd(adUnitId: _bannerTop, bannerPosition: AdPosition.topCenter);
     _createBannerAd(adUnitId: _bannerBottom, bannerPosition: AdPosition.bottomCenter);
@@ -363,35 +318,4 @@ class ApplovinPlugin {
     AppLovinMAX.hideBanner(_bannerBottom);
   }
 
-  static void _createMRecAd(String adUnitId) {
-    AdViewPosition viewPosition = AdViewPosition.centered;
-    AppLovinMAX.createMRec(adUnitId, viewPosition);
-  }
-
-  static bool isMRecAdReady() {
-    if (_isMRecLoaded.containsKey(_mrecUnitList[_mRecIndex]) && _isMRecLoaded[_mrecUnitList[_mRecIndex]]!) {
-      return true;
-    }
-    return false;
-  }
-
-  static void showMRecAd() {
-    if (kDebugMode) {
-      print("Trying to show MREC ad for index: " + _mRecIndex.toString());
-    }
-    AppLovinMAX.showMRec(_mrecUnitList[_mRecIndex]);
-  }
-
-  static void hideMRecAd() {
-    AppLovinMAX.hideMRec(_mrecUnitList[_mRecIndex]);
-    _changeMRecIndex();
-  }
-
-  static void _changeMRecIndex() {
-    if (_mRecIndex + 1 < _rewardedUnitList.length) {
-      _mRecIndex++;
-    } else {
-      _mRecIndex = 0;
-    }
-  }
 }
