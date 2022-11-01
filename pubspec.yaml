@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  applovin_max: 1.0.8
+  applovin_max: 2.1.0
   check_vpn_connection: 0.0.2
 
 dev_dependencies:

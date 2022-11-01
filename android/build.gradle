@@ -19,7 +19,6 @@ rootProject.allprojects {
         mavenCentral()
         maven { url "https://android-sdk.is.com" }
         maven { url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea" }
-        maven { url "https://maven.ogury.co" }
         maven { url "https://s3.amazonaws.com/smaato-sdk-releases/" }
         maven { url "https://sdk.tapjoy.com" }
         maven { url "https://verve.jfrog.io/artifactory/verve-gradle-release" }
@@ -43,25 +42,19 @@ android {
 
 dependencies {
     implementation 'com.applovin:applovin-sdk:+'
-    implementation 'com.google.android.gms:play-services-ads-identifier'
-
-    //------------ Adapters ------------------------
     implementation 'com.applovin.mediation:adcolony-adapter:+'
     implementation 'com.applovin.mediation:chartboost-adapter:+'
     implementation 'com.google.android.gms:play-services-base:16.1.0'
-    implementation 'com.applovin.mediation:fyber-adapter:+'
-    implementation 'com.applovin.mediation:google-adapter:+'
-    implementation 'com.applovin.mediation:hyprmx-adapter:+'
     implementation 'com.applovin.mediation:inmobi-adapter:+'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.applovin.mediation:ironsource-adapter:+'
     implementation 'com.applovin.mediation:facebook-adapter:+'
     implementation 'com.applovin.mediation:mintegral-adapter:+'
-    implementation 'com.applovin.mediation:ogury-presage-adapter:+'
     implementation 'com.applovin.mediation:smaato-adapter:+'
     implementation 'com.applovin.mediation:tapjoy-adapter:+'
     implementation 'com.applovin.mediation:unityads-adapter:+'
     implementation 'com.applovin.mediation:verve-adapter:+'
     implementation 'com.applovin.mediation:vungle-adapter:+'
+    implementation 'com.applovin.mediation:yandex-adapter:+'
 }
